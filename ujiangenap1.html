@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<title>Ujian DPK PPLG</title>
+	</head>
+	
+	<body>
+		<script>
+		const priceList = {
+			kaos : 30000,
+			kemeja : 50000,
+			jaket : 75000,
+			hoodie : 100000
+		};
+
+		function hitungDiskon(jml, harga, sesi) {
+			let diskon = 0;
+			let sisa = jml;
+
+		if (sesi === "pagi") {
+			if (jml <= 10) return 0;
+
+			let ambil = Math.min(sisa, 10);
+				diskon += ambil * harga * 0.05;
+				sisa -= ambil;
+
+		if (sisa > 0) {
+			ambil = Math.min(sisa, 10);
+			diskon += ambil * harga * 0.18;
+			sisa -= ambil;
+		}
+
+		if (sisa > 0) {
+			diskon += sisa * harga * 0.25;
+		  }
+		}
+		
+		else if (sesi === "siang") {
+			diskon = 0;
+		}
+
+		else if (sesi === "malam") {
+			let rate1 = jml <= 10 ? 0.05 : 0.15;
+			let ambil = Math.min(sisa, 10);
+			  diskon += ambil * harga * rate1;
+			  sisa -= ambil;
+
+		if (sisa > 0) {
+			let rate2 = jml <= 20 ? 0.18 : 0.25;
+			  ambil = Math.min(sisa, 10);
+			  diskon += ambil * harga * rate2;
+			  sisa -= ambil;
+		  }
+
+		  if (sisa > 0) {
+			diskon += sisa * harga * 0.35;
+		  }
+		}
+
+		return diskon;
+		}
+
+		let listTransaksi = [];
+		let banyak = parseInt(prompt("Masukkan jumlah transaksi"));
+
+		for (let i = 0; i < banyak; i++) {
+			console.log("=== TRANSAKSI " + (i + 1) + " ===");
+
+			let item = prompt("Jenis baju").toLowerCase();
+			let qty = parseInt(prompt("Jumlah beli"));
+			let sesi = prompt("Sesi (pagi / siang / malam)").toLowerCase();
+
+			let harga = priceList[item];
+			let totalAwal = harga * qty;
+			let potongan = hitungDiskon(qty, harga, sesi);
+			let totalAkhir = totalAwal - potongan;
+
+		listTransaksi.push(totalAkhir);
+
+			console.log("Baju        : " + item);
+			console.log("Harga       : Rp " + harga);
+			console.log("Jumlah      : " + qty);
+			console.log("Sesi        : " + sesi);
+			console.log("Subtotal    : Rp " + totalAwal);
+			console.log("Diskon      : Rp " + potongan);
+			console.log("Bayar       : Rp " + totalAkhir);
+			console.log("");
+		}
+
+		let sum = 0;
+		for (let x of listTransaksi) {
+			sum += x;
+		}
+
+			console.log("=== RINGKASAN ===");
+			console.log("Total Transaksi : " + listTransaksi.length);
+			console.log("Total Penjualan : Rp " + sum);
+			console.log("Rata-rata       : Rp " + (sum / listTransaksi.length));
+		</script>
+	</body>
+</html>
